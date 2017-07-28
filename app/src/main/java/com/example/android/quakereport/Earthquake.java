@@ -4,7 +4,7 @@ package com.example.android.quakereport;
  * Created by Viktor Khon on 7/26/2017.
  */
 
-public class Data {
+public class Earthquake {
 
     private double mMagnitude;
 
@@ -12,7 +12,7 @@ public class Data {
 
     private long mDateStamp;
 
-    public Data(double magnitude, String cityName, long dateStamp) {
+    public Earthquake(double magnitude, String cityName, long dateStamp) {
         mMagnitude = magnitude;
         mCityName = cityName;
         mDateStamp = dateStamp;

@@ -14,12 +14,12 @@ import java.util.Date;
  * Created by Viktor Khon on 7/26/2017.
  */
 
-public class EarthquakeAdapter extends ArrayAdapter<Data> {
+public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
 
     Date newDate;
 
-    public EarthquakeAdapter(Activity context, ArrayList<Data> data) {
-        super(context, 0, data);
+    public EarthquakeAdapter(Activity context, ArrayList<Earthquake> earthquake) {
+        super(context, 0, earthquake);
     }
 
     @Override
@@ -28,16 +28,16 @@ public class EarthquakeAdapter extends ArrayAdapter<Data> {
             convertView = LayoutInflater.from(getContext()).inflate(
                     R.layout.eqrthquake_item, parent, false);
 
-            Data currentData = getItem(position);
+            Earthquake currentEarthquake = getItem(position);
 
             TextView magnitudeTextView = (TextView) convertView.findViewById(R.id.tv_magnitude);
-            magnitudeTextView.setText(String.valueOf(currentData.getMagnitude()));
+            magnitudeTextView.setText(String.valueOf(currentEarthquake.getMagnitude()));
 
             TextView cityNameTextView = (TextView) convertView.findViewById(R.id.tv_city_name);
-            cityNameTextView.setText(currentData.getCityName());
+            cityNameTextView.setText(currentEarthquake.getCityName());
 
             TextView dateTextView = (TextView) convertView.findViewById(R.id.tv_occurence_date);
-            dateTextView.setText(String.valueOf(new Date(currentData.getDateStamp())));
+            dateTextView.setText(String.valueOf(new Date(currentEarthquake.getDateStamp())));
         }
         return convertView;
     }
