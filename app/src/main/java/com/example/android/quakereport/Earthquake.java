@@ -10,12 +10,12 @@ public class Earthquake {
 
     private String mCityName;
 
-    private long mDateStamp;
+    private long mTimeInMilliseconds;
 
-    public Earthquake(double magnitude, String cityName, long dateStamp) {
+    public Earthquake(double magnitude, String cityName, long timeInMilliseconds) {
         mMagnitude = magnitude;
         mCityName = cityName;
-        mDateStamp = dateStamp;
+        mTimeInMilliseconds = timeInMilliseconds;
     }
 
     public double getMagnitude() {
@@ -26,8 +26,8 @@ public class Earthquake {
         return mCityName;
     }
 
-    public long getDateStamp() {
-        return mDateStamp;
+    public long getTimeInMilliseconds() {
+        return mTimeInMilliseconds;
     }
 
 }

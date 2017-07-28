@@ -33,11 +33,8 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
             Earthquake currentEarthquake = getItem(position);
 
             // Create a new Date object and pass the value in millisecs
-            Date newDate = new Date(currentEarthquake.getDateStamp());
-            // Use SimpleDateFormat and create a new date format that we want to display in app
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM DD, yyyy");
-            // Attach the formatter to the date, and store it in a String
-            String dateToDisplay = dateFormatter.format(newDate);
+            Date newDate = new Date(currentEarthquake.getTimeInMilliseconds());
+
 
             TextView magnitudeTextView = (TextView) convertView.findViewById(R.id.tv_magnitude);
             magnitudeTextView.setText(String.valueOf(currentEarthquake.getMagnitude()));
@@ -45,8 +42,19 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
             TextView cityNameTextView = (TextView) convertView.findViewById(R.id.tv_city_name);
             cityNameTextView.setText(currentEarthquake.getCityName());
 
-            TextView dateTextView = (TextView) convertView.findViewById(R.id.tv_occurence_date);
+            TextView dateTextView = (TextView) convertView.findViewById(R.id.tv_date);
+            // Use SimpleDateFormat and create a new date format that we want to display in app
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM DD, yyyy");
+            // Attach the formatter to the date, and store it in a String
+            String dateToDisplay = dateFormatter.format(newDate);
             dateTextView.setText(dateToDisplay);
+
+            TextView timeTextView = (TextView) convertView.findViewById(R.id.tv_time);
+            // Use SimpleDateFormat and create a new time format that we want to display in app
+            SimpleDateFormat timeFormatter = new SimpleDateFormat("h:mm a");
+            // Attach the formatter to the time, and store it in a String
+            String timeToDisplay = timeFormatter.format(newDate);
+            timeTextView.setText(timeToDisplay);
         }
         return convertView;
     }

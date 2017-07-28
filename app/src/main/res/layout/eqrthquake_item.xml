@@ -21,9 +21,16 @@
         tools:text="City"/>
 
     <TextView
-        android:id="@+id/tv_occurence_date"
+        android:id="@+id/tv_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        tools:text="Date"/>
+        tools:text="Mar 6, 2010" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:text="3:00 PM" />
 </LinearLayout>
