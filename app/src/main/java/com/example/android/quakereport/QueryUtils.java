@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -66,9 +67,10 @@ public final class QueryUtils {
                 double magnitude = properties.getDouble("mag");
                 String place = properties.getString("place");
                 long time = properties.getLong("time");
+                String url = properties.getString("url");
 
                 // Create new Earthquake object and populate it with the data from JSON
-                earthquake = new Earthquake(magnitude, place, time);
+                earthquake = new Earthquake(magnitude, place, time, url);
                 // Add extracted data to the array list
                 earthquakes.add(earthquake);
             }
