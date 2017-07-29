@@ -14,7 +14,14 @@
         tools:text="magnitude"/>
 
     <TextView
-        android:id="@+id/tv_city_name"
+        android:id="@+id/tv_location_offset"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:text="Location offset"/>
+
+    <TextView
+        android:id="@+id/tv_primary_location"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"

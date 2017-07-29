@@ -32,15 +32,42 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
             // get the position of the Earthquake object
             Earthquake currentEarthquake = getItem(position);
 
-            // Create a new Date object and pass the value in millisecs
-            Date newDate = new Date(currentEarthquake.getTimeInMilliseconds());
-
-
             TextView magnitudeTextView = (TextView) convertView.findViewById(R.id.tv_magnitude);
             magnitudeTextView.setText(String.valueOf(currentEarthquake.getMagnitude()));
 
-            TextView cityNameTextView = (TextView) convertView.findViewById(R.id.tv_city_name);
-            cityNameTextView.setText(currentEarthquake.getCityName());
+            // Extract a full name of the place from Earthquake class
+            String name = currentEarthquake.getPlaceName();
+            // Create String values to hold names for offset location and name of a city
+            String offset;
+            String cityName;
+
+            // Get an index location when the word "of" starts
+            int index = name.indexOf("of");
+
+            if (index != -1) {
+                // If 'name' has the String "of" then:
+                // offsite = from 0 index to the beginning of "of" and add 3 indexes to make sure
+                // the word "of" is actually included as well
+                offset = name.substring(0, index+3);
+                // cityName = begin when "of" finishes until the last word in the String
+                cityName = name.substring(index+3, name.length());
+            } else {
+                // If "of" is not present, make offset return a specific String value
+                offset = getContext().getString(R.string.near_the);
+                // Make cityName start from the beginning until the end of the String
+                cityName = name.substring(0, name.length());
+            }
+
+            // Assign appropriate text to locationOffset TextView using String offset
+            TextView locationOffset = (TextView) convertView.findViewById(R.id.tv_location_offset);
+            locationOffset.setText(offset);
+
+            // Assign appropriate text to primaryLocation TextView using String cityName
+            TextView primaryLocation = (TextView) convertView.findViewById(R.id.tv_primary_location);
+            primaryLocation.setText(cityName);
+
+            // Create a new Date object and pass the value in millisecs
+            Date newDate = new Date(currentEarthquake.getTimeInMilliseconds());
 
             TextView dateTextView = (TextView) convertView.findViewById(R.id.tv_date);
             // Use SimpleDateFormat and create a new date format that we want to display in app

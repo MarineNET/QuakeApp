@@ -8,13 +8,13 @@ public class Earthquake {
 
     private double mMagnitude;
 
-    private String mCityName;
+    private String mPlaceName;
 
     private long mTimeInMilliseconds;
 
-    public Earthquake(double magnitude, String cityName, long timeInMilliseconds) {
+    public Earthquake(double magnitude, String placeName, long timeInMilliseconds) {
         mMagnitude = magnitude;
-        mCityName = cityName;
+        mPlaceName = placeName;
         mTimeInMilliseconds = timeInMilliseconds;
     }
 
@@ -22,8 +22,8 @@ public class Earthquake {
         return mMagnitude;
     }
 
-    public String getCityName() {
-        return mCityName;
+    public String getPlaceName() {
+        return mPlaceName;
     }
 
     public long getTimeInMilliseconds() {
