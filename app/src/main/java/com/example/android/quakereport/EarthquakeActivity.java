@@ -17,35 +17,46 @@ package com.example.android.quakereport;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
+    /**
+     * Sample JSON response for a USGS query
+     */
+    private static final String SAMPLE_JSON_RESPONSE =
+            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
+
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
+
+    ListView earthquakeListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
+        EarthquakeAsyncTask task = new EarthquakeAsyncTask();
+        task.execute(SAMPLE_JSON_RESPONSE);
+
         // Get the list of earthquakes from {@link QueryUtils}
-        final ArrayList<Earthquake> earthquakes = QueryUtils.extractEarthquakes();
+        final ArrayList<Earthquake> earthquakes = null;
 
         // Find a reference to the {@link ListView} in the layout
-        ListView earthquakeListView = (ListView) findViewById(R.id.list);
+        earthquakeListView = (ListView) findViewById(R.id.list);
 
-        // Create a new {@link ArrayAdapter} of earthquakes
-        EarthquakeAdapter adapter = new EarthquakeAdapter(this, earthquakes);
 
-        // Set the adapter on the {@link ListView}
-        // so the list can be populated in the user interface
-        earthquakeListView.setAdapter(adapter);
 
         // Set onClickListener to ListView
         earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -64,5 +75,38 @@ public class EarthquakeActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private class EarthquakeAsyncTask extends AsyncTask<String, Void, ArrayList<Earthquake>> {
+
+        @Override
+        protected ArrayList<Earthquake> doInBackground(String... stringUrl) {
+            // Create URL object
+            URL url = QueryUtils.createUrl(stringUrl[0]);
+
+            // Perform HTTP request to the URL and receive a JSON response back
+            String jsonResponse = "";
+            try {
+                jsonResponse = QueryUtils.makeHttpRequest(url);
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "Failed to load JSON from AsyncTask");
+            }
+
+            ArrayList<Earthquake> earthquakes = QueryUtils.extractEarthquakes(jsonResponse);
+            return earthquakes;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Earthquake> earthquakes) {
+            if (earthquakes == null) {
+                return;
+            }
+            // Create a new {@link ArrayAdapter} of earthquakes
+            EarthquakeAdapter adapter = new EarthquakeAdapter(EarthquakeActivity.this, earthquakes);
+
+            // Set the adapter on the {@link ListView}
+            // so the list can be populated in the user interface
+            earthquakeListView.setAdapter(adapter);
+        }
     }
 }

@@ -113,7 +113,7 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
 
             TextView dateTextView = (TextView) convertView.findViewById(R.id.tv_date);
             // Use SimpleDateFormat and create a new date format that we want to display in app
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM DD, yyyy");
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM dd, yyyy");
             // Attach the formatter to the date, and store it in a String
             String dateToDisplay = dateFormatter.format(newDate);
             dateTextView.setText(dateToDisplay);
