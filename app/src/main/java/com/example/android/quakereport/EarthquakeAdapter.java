@@ -13,6 +13,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Viktor Khon on 7/26/2017.
@@ -59,7 +60,7 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         return ContextCompat.getColor(getContext(), magnitudeColorResourceId);
     }
 
-    public EarthquakeAdapter(Activity context, ArrayList<Earthquake> earthquake) {
+    public EarthquakeAdapter(Activity context, List<Earthquake> earthquake) {
         super(context, 0, earthquake);
     }
 

@@ -36,7 +36,7 @@ public class EarthquakeActivity extends AppCompatActivity {
      * Sample JSON response for a USGS query
      */
     private static final String SAMPLE_JSON_RESPONSE =
-            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
+            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=5&limit=10";
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
 
@@ -77,10 +77,10 @@ public class EarthquakeActivity extends AppCompatActivity {
         });
     }
 
-    private class EarthquakeAsyncTask extends AsyncTask<String, Void, ArrayList<Earthquake>> {
+    private class EarthquakeAsyncTask extends AsyncTask<String, Void, List<Earthquake>> {
 
         @Override
-        protected ArrayList<Earthquake> doInBackground(String... stringUrl) {
+        protected List<Earthquake> doInBackground(String... stringUrl) {
             // Create URL object
             URL url = QueryUtils.createUrl(stringUrl[0]);
 
@@ -92,12 +92,12 @@ public class EarthquakeActivity extends AppCompatActivity {
                 Log.e(LOG_TAG, "Failed to load JSON from AsyncTask");
             }
 
-            ArrayList<Earthquake> earthquakes = QueryUtils.extractEarthquakes(jsonResponse);
+            List<Earthquake> earthquakes = QueryUtils.extractEarthquakes(jsonResponse);
             return earthquakes;
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Earthquake> earthquakes) {
+        protected void onPostExecute(List<Earthquake> earthquakes) {
             if (earthquakes == null) {
                 return;
             }
