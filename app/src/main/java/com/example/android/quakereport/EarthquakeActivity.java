@@ -55,16 +55,22 @@ public class EarthquakeActivity extends AppCompatActivity {
         // Get the list of earthquakes from {@link QueryUtils}
         final ArrayList<Earthquake> earthquakes = null;
 
+        // Create a new adapter that takes an empty list of earthquakes as input
+        mAdapter = new EarthquakeAdapter(this, new ArrayList<Earthquake>());
+
         // Find a reference to the {@link ListView} in the layout
         earthquakeListView = (ListView) findViewById(R.id.list);
 
+        // Set the adapter on the {@link ListView}
+        // so the list can be populated in the user interface
+        earthquakeListView.setAdapter(mAdapter);
 
         // Set onClickListener to ListView
         earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Find the current earthquake that was clicked on
-                Earthquake earthquake = earthquakes.get(position);
+                Earthquake earthquake = mAdapter.getItem(position);
 
                 // Convert the String URL into a URI object (to pass into the Intent constructor)
                 Uri webpage = Uri.parse(earthquake.getUrl());
