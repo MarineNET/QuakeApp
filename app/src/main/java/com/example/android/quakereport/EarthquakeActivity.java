@@ -42,6 +42,8 @@ public class EarthquakeActivity extends AppCompatActivity {
 
     ListView earthquakeListView;
 
+    EarthquakeAdapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +57,6 @@ public class EarthquakeActivity extends AppCompatActivity {
 
         // Find a reference to the {@link ListView} in the layout
         earthquakeListView = (ListView) findViewById(R.id.list);
-
 
 
         // Set onClickListener to ListView
@@ -77,36 +78,41 @@ public class EarthquakeActivity extends AppCompatActivity {
         });
     }
 
-    private class EarthquakeAsyncTask extends AsyncTask<String, Void, ArrayList<Earthquake>> {
+    private class EarthquakeAsyncTask extends AsyncTask<String, Void, List<Earthquake>> {
 
+        /**
+         * This method runs on a background thread and performs the network request.
+         * We should not update the UI from a background thread, so we return a list of
+         * {@link Earthquake}s as the result.
+         */
         @Override
-        protected ArrayList<Earthquake> doInBackground(String... stringUrl) {
-            // Create URL object
-            URL url = QueryUtils.createUrl(stringUrl[0]);
-
-            // Perform HTTP request to the URL and receive a JSON response back
-            String jsonResponse = "";
-            try {
-                jsonResponse = QueryUtils.makeHttpRequest(url);
-            } catch (IOException e) {
-                Log.e(LOG_TAG, "Failed to load JSON from AsyncTask");
+        protected List<Earthquake> doInBackground(String... urls) {
+            // Don't perform the request if there are no URLs, or the first URL is null.
+            if (urls.length < 1 || urls[0] == null) {
+                return null;
             }
 
-            ArrayList<Earthquake> earthquakes = QueryUtils.extractEarthquakes(jsonResponse);
-            return earthquakes;
+            List<Earthquake> result = QueryUtils.fetchEarthquakeData(urls[0]);
+            return result;
         }
 
+        /**
+         * This method runs on the main UI thread after the background work has been
+         * completed. This method receives as input, the return value from the doInBackground()
+         * method. First we clear out the adapter, to get rid of earthquake data from a previous
+         * query to USGS. Then we update the adapter with the new list of earthquakes,
+         * which will trigger the ListView to re-populate its list items.
+         */
         @Override
-        protected void onPostExecute(ArrayList<Earthquake> earthquakes) {
-            if (earthquakes == null) {
-                return;
-            }
-            // Create a new {@link ArrayAdapter} of earthquakes
-            EarthquakeAdapter adapter = new EarthquakeAdapter(EarthquakeActivity.this, earthquakes);
+        protected void onPostExecute(List<Earthquake> data) {
+            // Clear the adapter of previous earthquake data
+            mAdapter.clear();
 
-            // Set the adapter on the {@link ListView}
-            // so the list can be populated in the user interface
-            earthquakeListView.setAdapter(adapter);
+            // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
+            // data set. This will trigger the ListView to update.
+            if (data != null && !data.isEmpty()) {
+                mAdapter.addAll(data);
+            }
         }
     }
 }

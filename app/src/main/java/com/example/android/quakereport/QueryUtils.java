@@ -16,6 +16,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.android.quakereport.EarthquakeActivity.LOG_TAG;
 import static java.net.HttpURLConnection.HTTP_OK;
@@ -121,14 +122,14 @@ public final class QueryUtils {
      * Return a list of {@link Earthquake} objects that has been built up from
      * parsing a JSON response.
      */
-    public static ArrayList<Earthquake> extractEarthquakes(String earthquakeJSON) {
+    public static List<Earthquake> extractEarthquakes(String earthquakeJSON) {
         // If there is no JSON being passed, quit
         if (TextUtils.isEmpty(earthquakeJSON)) {
             return null;
         }
 
         // Create an empty ArrayList that we can start adding earthquakes to
-        ArrayList<Earthquake> earthquakes = new ArrayList<>();
+        List<Earthquake> earthquakes = new ArrayList<>();
 
         // Try to parse the SAMPLE_JSON_RESPONSE. If there's a problem with the way the JSON
         // is formatted, a JSONException exception object will be thrown.
@@ -167,6 +168,28 @@ public final class QueryUtils {
         }
 
         // Return the list of earthquakes
+        return earthquakes;
+    }
+
+    /**
+     * Query the USGS dataset and return a list of {@link Earthquake} objects.
+     */
+    public static List<Earthquake> fetchEarthquakeData(String requestUrl) {
+        // Create URL object
+        URL url = createUrl(requestUrl);
+
+        // Perform HTTP request to the URL and receive a JSON response back
+        String jsonResponse = null;
+        try {
+            jsonResponse = makeHttpRequest(url);
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Problem making the HTTP request.", e);
+        }
+
+        // Extract relevant fields from the JSON response and create a list of {@link Earthquake}s
+        List<Earthquake> earthquakes = extractEarthquakes(jsonResponse);
+
+        // Return the list of {@link Earthquake}s
         return earthquakes;
     }
 }
