@@ -190,6 +190,7 @@ public final class QueryUtils {
         List<Earthquake> earthquakes = extractEarthquakes(jsonResponse);
 
         // Return the list of {@link Earthquake}s
+        Log.v(LOG_TAG, "This is fetchEarthquakeData");
         return earthquakes;
     }
 }

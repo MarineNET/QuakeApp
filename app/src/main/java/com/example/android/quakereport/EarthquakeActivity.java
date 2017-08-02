@@ -15,7 +15,9 @@
  */
 package com.example.android.quakereport;
 
+import android.app.LoaderManager;
 import android.content.Intent;
+import android.content.Loader;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,7 +32,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EarthquakeActivity extends AppCompatActivity {
+public class EarthquakeActivity extends AppCompatActivity
+implements LoaderManager.LoaderCallbacks<List<Earthquake>> {
 
     /**
      * Sample JSON response for a USGS query
@@ -49,9 +52,6 @@ public class EarthquakeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-        EarthquakeAsyncTask task = new EarthquakeAsyncTask();
-        task.execute(SAMPLE_JSON_RESPONSE);
-
         // Get the list of earthquakes from {@link QueryUtils}
         final ArrayList<Earthquake> earthquakes = null;
 
@@ -64,6 +64,9 @@ public class EarthquakeActivity extends AppCompatActivity {
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
         earthquakeListView.setAdapter(mAdapter);
+
+        getLoaderManager().initLoader(0, null, this);
+        Log.v(LOG_TAG, "This is initLoader");
 
         // Set onClickListener to ListView
         earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -84,41 +87,29 @@ public class EarthquakeActivity extends AppCompatActivity {
         });
     }
 
-    private class EarthquakeAsyncTask extends AsyncTask<String, Void, List<Earthquake>> {
+    @Override
+    public Loader<List<Earthquake>> onCreateLoader(int id, Bundle args) {
+        Log.v(LOG_TAG, "This is onCreateLoader");
+        return new EarthquakeLoader(EarthquakeActivity.this, SAMPLE_JSON_RESPONSE);
 
-        /**
-         * This method runs on a background thread and performs the network request.
-         * We should not update the UI from a background thread, so we return a list of
-         * {@link Earthquake}s as the result.
-         */
-        @Override
-        protected List<Earthquake> doInBackground(String... urls) {
-            // Don't perform the request if there are no URLs, or the first URL is null.
-            if (urls.length < 1 || urls[0] == null) {
-                return null;
-            }
+    }
 
-            List<Earthquake> result = QueryUtils.fetchEarthquakeData(urls[0]);
-            return result;
+    @Override
+    public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> data) {
+        // Clear the adapter of previous earthquake data
+        mAdapter.clear();
+
+        // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
+        // data set. This will trigger the ListView to update.
+        if (data != null && !data.isEmpty()) {
+            Log.v(LOG_TAG, "This is onLoadFinished");
+            mAdapter.addAll(data);
         }
+    }
 
-        /**
-         * This method runs on the main UI thread after the background work has been
-         * completed. This method receives as input, the return value from the doInBackground()
-         * method. First we clear out the adapter, to get rid of earthquake data from a previous
-         * query to USGS. Then we update the adapter with the new list of earthquakes,
-         * which will trigger the ListView to re-populate its list items.
-         */
-        @Override
-        protected void onPostExecute(List<Earthquake> data) {
-            // Clear the adapter of previous earthquake data
-            mAdapter.clear();
-
-            // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
-            // data set. This will trigger the ListView to update.
-            if (data != null && !data.isEmpty()) {
-                mAdapter.addAll(data);
-            }
-        }
+    @Override
+    public void onLoaderReset(Loader<List<Earthquake>> loader) {
+        Log.v(LOG_TAG, "This is onLoaderReset");
+        mAdapter.clear();
     }
 }
