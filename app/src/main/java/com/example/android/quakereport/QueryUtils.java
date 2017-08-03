@@ -175,6 +175,8 @@ public final class QueryUtils {
      * Query the USGS dataset and return a list of {@link Earthquake} objects.
      */
     public static List<Earthquake> fetchEarthquakeData(String requestUrl) {
+        Log.i(LOG_TAG, "This is fetchEarthquakeData");
+
         // Create URL object
         URL url = createUrl(requestUrl);
 
@@ -187,10 +189,8 @@ public final class QueryUtils {
         }
 
         // Extract relevant fields from the JSON response and create a list of {@link Earthquake}s
-        List<Earthquake> earthquakes = extractEarthquakes(jsonResponse);
-
         // Return the list of {@link Earthquake}s
-        Log.v(LOG_TAG, "This is fetchEarthquakeData");
-        return earthquakes;
+
+        return extractEarthquakes(jsonResponse);
     }
 }

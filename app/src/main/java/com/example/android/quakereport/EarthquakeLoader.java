@@ -34,24 +34,25 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<Earthquake>>{
     protected void onStartLoading() {
         if (result != null) {
             // Use cached data
-            Log.v(LOG_TAG, "This is onStartLoading");
+            Log.i(LOG_TAG, "This is onStartLoading");
             deliverResult(result);
         } else {
             // We have no data, so kick off loading it
-            Log.v(LOG_TAG, "This is onStartLoading");
+            Log.i(LOG_TAG, "This is onStartLoading");
             forceLoad();
         }
     }
 
     @Override
     public List<Earthquake> loadInBackground() {
+        Log.i(LOG_TAG, "This is loadInBackground");
         // Don't perform the request if there are no URLs, or the first URL is null.
         if (mUrl.length() < 1 || mUrl == null) {
             return null;
         }
 
         result = QueryUtils.fetchEarthquakeData(mUrl);
-        Log.v(LOG_TAG, "This is loadInBackground");
+
         return result;
     }
 
