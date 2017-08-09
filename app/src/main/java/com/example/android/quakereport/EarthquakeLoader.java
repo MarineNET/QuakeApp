@@ -32,15 +32,10 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<Earthquake>>{
 
     @Override
     protected void onStartLoading() {
-        if (result != null) {
-            // Use cached data
-            Log.i(LOG_TAG, "This is onStartLoading");
-            deliverResult(result);
-        } else {
-            // We have no data, so kick off loading it
+
             Log.i(LOG_TAG, "This is onStartLoading");
             forceLoad();
-        }
+
     }
 
     @Override
