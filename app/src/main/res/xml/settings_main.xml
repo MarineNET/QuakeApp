@@ -2,6 +2,14 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   android:title="@string/settings_title">
 
+    <ListPreference
+
+        android:title="@string/settings_order_by_label"
+        android:key="@string/settings_order_by_key"
+        android:defaultValue="@string/settings_order_by_default"
+        android:entries="@array/settings_order_by_labels"
+        android:entryValues="@array/settings_order_by_values"/>
+
     <EditTextPreference
         android:title="@string/settings_min_magnitude_label"
         android:key="@string/settings_min_magnitude_key"
